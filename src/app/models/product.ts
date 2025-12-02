@@ -19,3 +19,8 @@ export interface CreateProductDTO extends Omit<Product, 'id' | 'category'| 'slug
     categoryId: number;
 }
 
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface UpdateProductDTO extends Partial<CreateProductDTO> { }
+
+

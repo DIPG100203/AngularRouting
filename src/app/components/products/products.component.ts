@@ -1,5 +1,5 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Product, CreateProductDTO } from '../../models/product';
+import { Product, CreateProductDTO, UpdateProductDTO } from '../../models/product';
 import { ProductComponent } from '../product/product.component';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from '../../services/products.service';
@@ -40,6 +40,11 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+  limit = 10;
+  offset = 0;
+
+
+
   today = new Date();
   date = new Date(2024, 11, 25);
 
@@ -56,9 +61,9 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.productsService.getAllProducts().subscribe(data => {
+    this.productsService.getProductsByPages(10, 0).subscribe(data => {
       this.products=data;
-      console.log(data);
+      this.offset += this.limit;
     });
 
   }
@@ -91,6 +96,35 @@ export class ProductsComponent implements OnInit {
     }
     this.productsService.createProduct(product).subscribe(data => {
       this.products.unshift(data);
+    });
+  }
+
+  updateProduct() {
+    const changes: UpdateProductDTO = {
+      title: 'Producto Actualizado',
+      price: 2000,
+      images: this.productChosen.images
+    }
+    const id= this.productChosen.id;
+    this.productsService.updateProduct(id, changes).subscribe(data => {
+      const productIndex = this.products.findIndex(item => item.id === this.productChosen.id);
+      this.products[productIndex] = data;
+    })
+  }
+
+  deleteProuct() {
+    const id = this.productChosen.id;
+    this.productsService.deleteProduct(id).subscribe(() =>{
+      const productIndex = this.products.findIndex(item => item.id === this.productChosen.id)
+      this.products.splice(productIndex, 1);
+      this.showProductDetail = false;
+    })
+  }
+
+  loadMore() {
+    this.productsService.getProductsByPages(this.limit, this.offset).subscribe(data => {
+      this.products=this.products.concat(data);
+      this.offset += this.limit;
     });
   }
 }

@@ -10,6 +10,7 @@
         (showProduct)="onShowDetail($event)"
         ></app-product>
     </div>
+    <button (click)="loadMore()">Load more</button>
 </div>
 
 <!-- ESTO SERA COMO UN MENU LATERAL :P-->
@@ -33,6 +34,9 @@
         <img [src]="img" alt="" class="detail-img">
       </swiper-slide>
     </swiper-container>
+        <p>Price: {{productChosen.price}}</p>
         <p>{{productChosen.description}}</p>
+        <Button (click)="updateProduct()">Update</Button>
+        <Button (click)="deleteProuct()">Delete</Button>
     </div>
 </div>

@@ -1,9 +1,10 @@
 <!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
 
 <button (click)="createNewProduct()">create</button>
+<button (click)="onShowDetail('1234567890')">deatalle not found</button>
 
 <div class="product--grid">
-    <!--eslint-disable-next-line @angular-eslint/template/prefer-control-flow-->
+     
     <div *ngFor="let product of products">
         <app-product [product]="product"
         (addedProduct)="onAddToShoppingCart($event)"
@@ -16,7 +17,8 @@
 <!-- ESTO SERA COMO UN MENU LATERAL :P-->
 
 <div class="product__detail" [class.active] ="showProductDetail">
-    <div>
+  {{statusDetail}}
+    <div *ngIf="productChosen">
         <button (click)="toggleProductDetail()">Close</button>
         <h1>{{productChosen.title}}</h1>
         <swiper-container

@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Product, CreateProductDTO, UpdateProductDTO } from '../models/product';
+import { retry, catchError, map } from 'rxjs';
+import { throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-  private API_URL = 'https://api.escuelajs.co/api/v1/products';
+  private API_URL = `${environment.APIURL}/api/v1/products`;
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private http: HttpClient) { }
@@ -19,12 +22,35 @@ export class ProductsService {
       params = params.set('limit', limit)
       params = params.set('offset', offset)
     }
-    return this.http.get<Product[]>(this.API_URL, {params});
-
+    return this.http.get<Product[]>(this.API_URL, {params})
+    .pipe(
+      retry(3),
+      map(products => products.map(item => {
+        return {
+          ...item,
+          taxes: .19 * item.price
+        }
+      }))
+    );
   }
 
+
   getProduct(id: string) {
-    return this.http.get<Product>(`${this.API_URL}/${id}`);
+    return this.http.get<Product>(`${this.API_URL}/${id}`)
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === HttpStatusCode.Conflict) {
+          return throwError(' EL PENDEJO QUE ESCRIBIO LA API SE EQUIVOCO EN ALGO!!!');
+        }
+        if (error.status === HttpStatusCode.NotFound) {
+          return throwError('EL PRODUCTO NO EXISTE!!!');
+        }
+        if (error.status === HttpStatusCode.Unauthorized) {
+          return throwError('NO ESTAS AUTORIZADO!!!');
+        }
+        return throwError('MIERDA!!!');
+      })
+    )
   }
 
   getProductsByPages(limit: number, offset: number) {

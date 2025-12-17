@@ -6,6 +6,7 @@ export interface Product {
     images: string[];
     description: string;
     category: Category;
+    taxes?: number;
     
 }
 

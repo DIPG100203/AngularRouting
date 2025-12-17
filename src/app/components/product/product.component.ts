@@ -2,13 +2,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Product } from '../../models/product';
 import { ImgComponent } from "../img/img.component";
 import { CommonModule } from '@angular/common';
-import { ReversePipe } from '../../pipes/reverse.pipe';
-import { HighlightDirective } from "../../directives/highlight.directive";
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [ImgComponent, CommonModule, ReversePipe, HighlightDirective],
+  imports: [ImgComponent, CommonModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss'
 })
@@ -38,5 +36,6 @@ export class ProductComponent {
   onShowDetail() {
     this.showProduct.emit(this.product.id)
   }
+
 
 }

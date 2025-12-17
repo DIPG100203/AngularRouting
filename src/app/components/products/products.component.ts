@@ -42,6 +42,7 @@ export class ProductsComponent implements OnInit {
 
   limit = 10;
   offset = 0;
+  statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
 
 
 
@@ -76,6 +77,12 @@ export class ProductsComponent implements OnInit {
 
     this.pagination();
 
+    this.productsService.getAllProducts(10, 0)
+    .subscribe(products => {
+      console.log('PRODUCTOS DESDE SERVICE:', products);
+      this.products = products;
+    });
+
   }
 
   onAddToShoppingCart(product: Product) {
@@ -89,9 +96,15 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetail(id: string) {
+    this.statusDetail = 'loading';
+    this.toggleProductDetail();
     this.productsService.getProduct(id).subscribe(data => {
-      this.toggleProductDetail();
       this.productChosen = data;
+      this.statusDetail = 'success';
+    },
+    errorMesagge => {
+      window.alert(errorMesagge)
+      this.statusDetail = 'error';
     })
 
   }

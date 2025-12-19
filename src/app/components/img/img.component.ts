@@ -24,7 +24,6 @@ export class ImgComponent   {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('img') set changeImg(newImg: string) {
     this.img = newImg;
-    console.log('change just img =>', this.img);
   }
 
   @Input() alt = '';
@@ -64,7 +63,6 @@ export class ImgComponent   {
   }
 
   imgLoad() {
-    console.log('log hijo');
     this.loaded.emit(this.img);
   }
 }

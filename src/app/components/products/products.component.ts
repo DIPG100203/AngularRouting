@@ -80,7 +80,6 @@ export class ProductsComponent implements OnInit {
 
     this.productsService.getAllProducts(10, 0)
     .subscribe(products => {
-      console.log('PRODUCTOS DESDE SERVICE:', products);
       this.products = products;
     });
 

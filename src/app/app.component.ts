@@ -10,6 +10,9 @@ import { NavComponent } from "./components/nav/nav.component";
 
 import { AuthService } from './services/auth/auth.service';
 import { UsersService } from './services/users/users.service';
+import { FilesService } from './services/files/files.service';
+
+
 
 
 @Component({
@@ -22,10 +25,12 @@ import { UsersService } from './services/users/users.service';
 export class AppComponent {
   imgParent = '';
   token = '';
+  imgRta = '';
 
   constructor(
     private auth: AuthService,
-    private users: UsersService
+    private users: UsersService,
+    private files: FilesService
   ) {}
   
 
@@ -44,6 +49,31 @@ export class AppComponent {
       console.log(rta);
     })
   }
+
+  downloadPDF() {
+    this.files.getFiles('myPDF.pdf', 'https://www.rd.usda.gov/sites/default/files/pdf-sample_0.pdf', 'application/pdf')
+    .subscribe()
+  }
+
+  onUpload(event: Event) {
+  const element = event.target as HTMLInputElement;
+  const file = element.files?.item(0);
+
+  if (file) {
+    // ✅ preview local (NO SE TOCA)
+    this.imgRta = URL.createObjectURL(file);
+
+    // subida normal
+    this.files.uploadFile(file).subscribe({
+      next: () => {
+        console.log('Imagen subida correctamente');
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
+  }
+}
 
   
 }

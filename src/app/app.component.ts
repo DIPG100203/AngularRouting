@@ -23,6 +23,8 @@ import { FilesService } from './services/files/files.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [x: string]: any;
   imgParent = '';
   token = '';
   imgRta = '';

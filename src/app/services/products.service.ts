@@ -10,10 +10,19 @@ import { environment } from '../../environments/environment';
 })
 export class ProductsService {
 
-  private API_URL = `${environment.APIURL}/api/v1/products`;
+  private API_URL = `${environment.APIURL}/api/v1`;
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private http: HttpClient) { }
+
+  getByCategory(categoryId: string, limit?: number, offset?: number) {
+    let params = new HttpParams();
+    if(limit && offset) {
+      params = params.set('limit', limit)
+      params = params.set('offset', offset)
+    }
+    return this.http.get<Product[]>(`${this.API_URL}/categories/${categoryId}/products`, {params})
+  }
 
   getAllProducts(limit?: number, offset?: number) {
     
@@ -22,7 +31,7 @@ export class ProductsService {
       params = params.set('limit', limit)
       params = params.set('offset', offset)
     }
-    return this.http.get<Product[]>(this.API_URL, {params})
+    return this.http.get<Product[]>(`${this.API_URL}/products`, {params})
     .pipe(
       retry(3),
       map(products => products.map(item => {
@@ -43,7 +52,7 @@ export class ProductsService {
 
 
   getProduct(id: string) {
-    return this.http.get<Product>(`${this.API_URL}/${id}`)
+    return this.http.get<Product>(`${this.API_URL}/products/${id}`)
     .pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === HttpStatusCode.Conflict) {
@@ -61,22 +70,22 @@ export class ProductsService {
   }
 
   getProductsByPages(limit: number, offset: number) {
-    return this.http.get<Product[]>(`${this.API_URL}`, {
+    return this.http.get<Product[]>(`${this.API_URL}/products`, {
       params: {limit, offset}
     })
   }
 
   createProduct(data: CreateProductDTO) {
-    return this.http.post<Product>(this.API_URL, data)
+    return this.http.post<Product>(`${this.API_URL}/products`, data)
   }
 
   updateProduct(id: string, data: UpdateProductDTO) {
-    return this.http.put<Product>(`${this.API_URL}/${id}`, data)
+    return this.http.put<Product>(`${this.API_URL}/products/${id}`, data)
     // put es para actualizar todo el objeto
     // patch es para actualizar solo una parte del objeto
   }
 
   deleteProduct(id: string) {
-    return this.http.delete<boolean>(`${this.API_URL}/${id}`);
+    return this.http.delete<boolean>(`${this.API_URL}/products/${id}`);
   }
 }

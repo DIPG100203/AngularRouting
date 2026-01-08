@@ -1,4 +1,4 @@
-<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+ 
 <!-- <p><input type="text" [(ngModel)] ="imgParent"></p>
 
 <app-img (loaded)="onLoaded($event)" [img]="imgParent"></app-img>
@@ -6,7 +6,7 @@
  -->
 
  <app-nav/>
- <button (click)="createUser()">Crear Usuario</button>
+ <!-- <button (click)="createUser()">Crear Usuario</button>
 <p>
      <a href="/files/texto.txt" download>Download</a>
 </p>
@@ -16,5 +16,7 @@
 <p>
     <input type="file" (change)="onUpload($event)">
     <img *ngIf="imgRta" [src]="imgRta" alt="">
-</p>
-<app-products></app-products>
+</p> -->
+
+<router-outlet></router-outlet>
+<!-- <app-products></app-products> -->

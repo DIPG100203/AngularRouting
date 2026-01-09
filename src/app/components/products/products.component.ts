@@ -26,6 +26,11 @@ export class ProductsComponent {
   total = 0;
 
   @Input() products: Product[] = [];
+  @Input() set productId(id: string | null) {
+    if (id) {
+      this.onShowDetail(id);
+    }
+  }
   @Output() loadMore = new EventEmitter();
 
   showProductDetail = false;
@@ -48,10 +53,9 @@ export class ProductsComponent {
   today = new Date();
   date = new Date(2024, 11, 25);
 
-  // eslint-disable-next-line @angular-eslint/prefer-inject
+  
   constructor(
     private stService: StoreService,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private productsService: ProductsService
   ) {
     this.shoppingCart = this.stService.getShopping();
@@ -71,7 +75,9 @@ export class ProductsComponent {
 
   onShowDetail(id: string) {
     this.statusDetail = 'loading';
-    this.toggleProductDetail();
+    if (!this.showProductDetail) {
+      this.showProductDetail = true;
+    }
     this.productsService.getProduct(id).subscribe(
       (data) => {
         this.productChosen = data;

@@ -7,6 +7,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RecoveryComponent } from './pages/recovery/recovery.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 
 export const routes: Routes = [
     {
@@ -23,16 +24,16 @@ export const routes: Routes = [
         component: CategoryComponent
     },
     {
+        path: 'product/:id',
+        component: ProductDetailComponent
+    },
+    {
         path: 'login',
         component: LoginComponent
     },
     {
         path: 'cart',
         component: MyCartComponent
-    },
-    {
-        path: 'notFound',
-        component: NotFoundComponent
     },
     {
         path: 'profile',
@@ -45,5 +46,9 @@ export const routes: Routes = [
     {
         path: 'register',
         component: RegisterComponent
+    },
+    {
+        path: '**',
+        component: NotFoundComponent
     }
 ];

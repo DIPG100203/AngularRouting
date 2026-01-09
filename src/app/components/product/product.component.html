@@ -1,10 +1,15 @@
 <!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
- 
+
 <div class="product-card">
-<app-img *ngIf="product.images.length > 0" [img]="product.images[0]"></app-img>
+  <a [routerLink]="['/product', product.id]">
+    <app-img
+      *ngIf="product.images.length > 0"
+      [img]="product.images[0]"
+    ></app-img>
+  </a>
 </div>
-<h2>{{product.price | currency:'MXN' }}</h2>
-<p>{{product.title }}</p>
-<p> {{product?.taxes | currency:'MXN' }}</p>
+<h2>{{ product.price | currency : "MXN" }}</h2>
+<p>{{ product.title }}</p>
+<p>{{ product?.taxes | currency : "MXN" }}</p>
 <button (click)="onShowDetail()">Ver detalle</button>
 <button (click)="onAddToCart()">Agregar</button>

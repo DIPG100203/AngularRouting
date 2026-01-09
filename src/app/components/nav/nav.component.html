@@ -11,12 +11,15 @@
       <img src="/svg/icon_shopping_cart.svg" alt="logo" />
     </a>
   </div>
-  <div class="side-menu" [class.active] = "showMenu">
+  <div class="side-menu" [class.active]="showMenu">
     <button (click)="toogleMenu()">Close</button>
     <ul>
-      <li><a href="">All</a></li>
-      <li><a href="">Clothes</a></li>
-      <li><a href="">Electronics</a></li>
+      <li routerLinkActive="vege"><a  routerLink="home">All</a></li>
+      <li routerLinkActive="vege" *ngFor="let item of categories">
+        <a  [routerLink]="['/category', item.id]">{{
+          item.name
+        }}</a>
+      </li>
     </ul>
   </div>
 </div>
@@ -27,23 +30,26 @@
         <img src="/svg/logo_yard_sale.svg" alt="logo" />
       </a>
       <ul>
-        <li><a href="">All</a></li>
-        <li><a href="">Clothes</a></li>
-        <li><a href="">Electronics</a></li>
+        <li><a routerLink="home">All</a></li>
+        <li *ngFor="let item of categories">
+          <a [routerLink]="['/category', item.id]">{{ item.name }}</a>
+        </li>
       </ul>
     </nav>
     <div class="info">
       <div class="account">
-        <button *ngIf="!profile; else elseBlock" (click)="login()">Login</button>
+        <button *ngIf="!profile; else elseBlock" (click)="login()">
+          Login
+        </button>
         <ng-template #elseBlock>
-          {{profile?.email}}
+          {{ profile?.email }}
         </ng-template>
       </div>
       <div>
         <a href="">
           <img src="/svg/icon_shopping_cart.svg" alt="logo" />
         </a>
-        <span class="counter">{{counter}}</span>
+        <span class="counter">{{ counter }}</span>
       </div>
     </div>
   </div>

@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
+import { switchMap } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductsComponent } from '../../components/products/products.component';
 
@@ -23,17 +24,40 @@ export class CategoryComponent implements OnInit {
     private service: ProductsService
   ) {}
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.categoryId = params.get('id');
-      if (this.categoryId) {
-        this.service
-          .getByCategory(this.categoryId, this.limit, this.offset)
-          .subscribe((data) => {
-            this.products = data;
-          });
-      }
+  /* ngOnInit(): void {
+    this.route.paramMap
+    .pipe(
+      switchMap((params) => {
+        this.categoryId = params.get('id')
+        if (this.categoryId) {
+          this.service.getByCategory(this.categoryId, this.limit, this.offset)
+        }
+        return [];
+      })
+    )
+    .subscribe((data) => {
+      this.products = data
     });
+  } */
+
+    ngOnInit(): void {
+    this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          this.categoryId = params.get('id');
+          if (this.categoryId) {
+            return this.service.getByCategory(
+              this.categoryId,
+              this.limit,
+              this.offset
+            );
+          }
+          return [];
+        })
+      )
+      .subscribe((data) => {
+        this.products = data;
+      });
   }
 
   loadmore() {

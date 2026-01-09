@@ -4,41 +4,38 @@
 <button (click)="onShowDetail('1234567890')">deatalle not found</button>
 
 <div class="product--grid">
-     
-    <div *ngFor="let product of products">
-        <app-product [product]="product"
-        (addedProduct)="onAddToShoppingCart($event)"
-        (showProduct)="onShowDetail($event)"
-        ></app-product>
-    </div>
-    <button (click)="onLoadMore()">Load more</button>
+  <div *ngFor="let product of products">
+    <app-product
+      [product]="product"
+      (addedProduct)="onAddToShoppingCart($event)"
+      (showProduct)="onShowDetail($event)"
+    ></app-product>
+  </div>
+  <button (click)="onLoadMore()">Load more</button>
 </div>
 
 <!-- ESTO SERA COMO UN MENU LATERAL :P-->
 
-<div class="product__detail" [class.active] ="showProductDetail">
-  {{statusDetail}}
-    <div *ngIf="productChosen">
-        <button (click)="toggleProductDetail()">Close</button>
-        <h1>{{productChosen.title}}</h1>
-        <swiper-container
+<div class="product__detail" [class.active]="showProductDetail">
+  {{ statusDetail }}
+  <div *ngIf="productChosen">
+    <button (click)="toggleProductDetail()">Close</button>
+    <h1>{{ productChosen.title }}</h1>
+    <swiper-container
       slides-per-view="1"
       space-between="10"
-      pagination ="true"
+      pagination="true"
       navigation="true"
-      style="width: 100%; height: 280px;"
+      style="width: 100%; height: 280px"
       class="detail-swiper"
     >
-      
-      <swiper-slide
-      
-       *ngFor="let img of productChosen.images">
-        <img [src]="img" alt="" class="detail-img">
+      <swiper-slide *ngFor="let img of productChosen.images">
+        <img [src]="img" alt="" class="detail-img" />
       </swiper-slide>
     </swiper-container>
-        <p>Price: {{productChosen.price}}</p>
-        <p>{{productChosen.description}}</p>
-        <Button (click)="updateProduct()">Update</Button>
-        <Button (click)="deleteProuct()">Delete</Button>
-    </div>
+    <p>Price: {{ productChosen.price }}</p>
+    <p>{{ productChosen.description }}</p>
+    <Button (click)="updateProduct()">Update</Button>
+    <Button (click)="deleteProuct()">Delete</Button>
+  </div>
 </div>

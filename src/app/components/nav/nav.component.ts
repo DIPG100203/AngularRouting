@@ -6,7 +6,7 @@ import { CategoriesService } from '../../services/categories/categories.service'
 import { User } from '../../models/user';
 import { Category } from '../../models/category';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import { RouterLink, RouterLinkActive, Router } from "@angular/router";
 
 
 @Component({
@@ -22,11 +22,13 @@ export class NavComponent implements OnInit {
   counter = 0;
   profile: User | null = null;
   categories: Category[] = []
+  token = ''
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private store: StoreService,
     private auth: AuthService,
-    private categoriesSer: CategoriesService
+    private categoriesSer: CategoriesService,
+    private router: Router
   ) {
 
   }
@@ -36,6 +38,11 @@ export class NavComponent implements OnInit {
       this.counter = products.length;
     });
     this.getAllCategories();
+    this.auth.user$.subscribe(
+      data => {
+        this.profile = data
+      }
+    )
   }
   
 
@@ -44,9 +51,16 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    this.auth.loginAndGet('juan@example.com', '123456')
+    this.auth.loginAndGet('admin@mail.com', 'admin123')
+    .subscribe(() => {
+      this.router.navigate(['/profile'])
+    })
+  }
+
+  getProfile () {
+    this.auth.profile(this.token)
     .subscribe(user => {
-      this.profile = user;
+      this.profile = user
     })
   }
 
@@ -55,6 +69,13 @@ export class NavComponent implements OnInit {
     .subscribe(data => {
       this.categories = data;
     })
+  }
+
+  logout() {
+    this.auth.logOut()
+    this.profile = null
+    this.router.navigate(['/home'])
+    console.log('funciona')
   }
 
 

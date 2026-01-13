@@ -1,1 +1,8 @@
-<p>profile works!</p>
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
+<div *ngIf="user">
+    <h1>My profiles</h1>
+    <p>Nombre: {{user.name}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>Role: {{user.role}}</p>
+    <a *ngIf="user.role === 'admin'" routerLink="/cms">Ir al cms</a>
+</div>

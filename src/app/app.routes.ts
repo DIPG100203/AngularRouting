@@ -9,6 +9,9 @@ import { RecoveryComponent } from './pages/recovery/recovery.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 
+import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
+
 export const routes: Routes = [
     {
         path: '',
@@ -37,6 +40,7 @@ export const routes: Routes = [
     },
     {
         path: 'profile',
+        canActivate: [authGuard],
         component: ProfileComponent
     },
     {
@@ -46,6 +50,11 @@ export const routes: Routes = [
     {
         path: 'register',
         component: RegisterComponent
+    },
+    {
+        path: 'cms',
+        canActivate: [adminGuard],
+        loadChildren: () => import('./cms/cms.module').then(m => m.CmsModule)
     },
     {
         path: '**',

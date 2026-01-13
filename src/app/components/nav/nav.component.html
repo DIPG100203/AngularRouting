@@ -14,11 +14,9 @@
   <div class="side-menu" [class.active]="showMenu">
     <button (click)="toogleMenu()">Close</button>
     <ul>
-      <li routerLinkActive="vege"><a  routerLink="home">All</a></li>
+      <li routerLinkActive="vege"><a routerLink="home">All</a></li>
       <li routerLinkActive="vege" *ngFor="let item of categories">
-        <a  [routerLink]="['/category', item.id]">{{
-          item.name
-        }}</a>
+        <a [routerLink]="['/category', item.id]">{{ item.name }}</a>
       </li>
     </ul>
   </div>
@@ -42,7 +40,8 @@
           Login
         </button>
         <ng-template #elseBlock>
-          {{ profile?.email }}
+          <a routerLink="/profile">{{ profile?.email }}</a>
+          <button type="button" (click)="logout()">Logout</button>
         </ng-template>
       </div>
       <div>

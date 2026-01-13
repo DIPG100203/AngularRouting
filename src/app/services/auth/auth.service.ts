@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Auth } from '../../models/auth';
 import { User } from '../../models/user';
-import { switchMap, tap } from 'rxjs';
+import { BehaviorSubject, switchMap, tap } from 'rxjs';
 import { TokenService } from '../token/token.service';
 
 @Injectable({
@@ -13,6 +13,8 @@ import { TokenService } from '../token/token.service';
 export class AuthService {
 
   private API_URL = `${environment.APIURL}/api/v1/auth`;
+  private user = new BehaviorSubject<User | null>(null)
+  user$ = this.user.asObservable()
 
   constructor(
     // eslint-disable-next-line @angular-eslint/prefer-inject
@@ -27,22 +29,32 @@ export class AuthService {
     )
   }
 
-  profile() {
+  profile(token: string) {
     /* const headers = new HttpHeaders();
-    headers.set('Authorization', `Bearer ${token}`); */
+    headers.set('Authorization', `Bearer ${token}`) */
     return this.http.get<User>(`${this.API_URL}/profile`, {
-     /*  headers: {
+      headers: {
         Authorization: `Bearer ${token}`,
-        //'Content-Type' : 'application/json'
+        
       }
-    } */
-  });
+    })
+    .pipe(
+      tap(user => this.user.next(user))
+    )
+/*     .pipe(
+      tap(user => this.user.next(user))
+    ); */
   }
 
   loginAndGet(email: string, password: string) {
     return this.login(email, password)
     .pipe(
-      switchMap(() => this.profile())
+      switchMap(rta => this.profile(rta.access_token))
     )
   }
+
+  logOut() {
+    this.tokenSe.removeToken()
+  }
+
 }

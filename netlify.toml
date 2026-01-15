@@ -1,6 +1,7 @@
 [build]
+  command = "npm run build -- --configuration production"
   publish = "dist/angular-modules"
-  command = "npm run build"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

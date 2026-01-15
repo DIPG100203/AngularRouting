@@ -1,8 +1,11 @@
 [build]
   command = "npm run build -- --configuration production"
-  publish = "dist/angular-modules"
+  publish = "dist/my-store"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[plugins]
+  # vacío a propósito para desactivar plugins automáticos
